@@ -54,10 +54,25 @@ except FlagFormatError as exc:
   error, not a silent overwrite, since that almost always means two names
   for the same flag have drifted apart somewhere upstream.
 
+## Loading files
+
+```python
+from flagnorm import load_flags
+
+load_flags("flags.json")   # top-level JSON object
+load_flags("flags.conf")   # key=value lines, '#' comments allowed
+```
+
+The parser is picked by file suffix: `.json` is JSON, anything else is read as
+`key=value` lines (the same shape `format_flags` prints). Duplicate keys in
+the file are an error, not last-one-wins. `.yaml`/`.yml` files are refused
+because the standard library can't parse YAML and this project has no
+dependencies. `load_raw_flags` returns the dict before normalization.
+
 ## Status
 
-Early. Covers dict-in, dict-out normalization with a table-driven test suite
-for the awkward cases. No file format readers yet - see the roadmap.
+Early. Dict-in, dict-out normalization with a table-driven test suite for the
+awkward cases, plus JSON and key=value file loading. No CLI yet.
 
 ## Running the tests
 
